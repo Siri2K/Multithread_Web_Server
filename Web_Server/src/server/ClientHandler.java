@@ -8,13 +8,20 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.Random;
+import java.util.concurrent.Semaphore; 
 
+//A shared resource/class. 
+class Shared  
+{ 
+    static int count = 0; 
+} 
 
 public class ClientHandler implements Runnable {
         private Socket clientSocket;
         static final Account clientAccount1 = new Account(123, 4000);
         static final Account clientAccount2 = new Account(321, 5000);
         static final Account clientAccount3 = new Account(432, 2000);
+        static Semaphore semaphore = new Semaphore(1);
 
         public ClientHandler(Socket clientSocket) {
             this.clientSocket = clientSocket;
@@ -23,11 +30,11 @@ public class ClientHandler implements Runnable {
         @Override
         public void run() {
             try {
+                semaphore.acquire();
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
                 OutputStream out = clientSocket.getOutputStream();
-
                 String request = in.readLine();
+
                 if (request != null) {
                     if (request.startsWith("GET")) {
                         // Handle GET request
@@ -42,9 +49,14 @@ public class ClientHandler implements Runnable {
                 in.close();
                 out.close();
                 clientSocket.close();
-            } catch (IOException e) {
+            } 
+            catch (IOException e) {
                 e.printStackTrace();
             }
+            catch(InterruptedException e){
+                e.printStackTrace();
+            }
+            semaphore.release();
         }
 
         private static void handleGetRequest(OutputStream out) throws IOException {
