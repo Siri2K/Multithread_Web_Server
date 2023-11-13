@@ -13,6 +13,7 @@ public class WebServer {
         try (ServerSocket serverSocket = new ServerSocket(5000)) {
             while (true) {
                 System.out.println("Waiting for a client to connect...");
+                System.out.println("https://localhost:5000");
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client...");
 
