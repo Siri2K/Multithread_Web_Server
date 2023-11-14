@@ -1,11 +1,10 @@
-package server;
-
 /* Java Libraries */
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
+/* Import Classes */
+import server.ClientHandler;
 
 public class WebServer {
 
@@ -13,12 +12,13 @@ public class WebServer {
         try (ServerSocket serverSocket = new ServerSocket(5000)) {
             while (true) {
                 System.out.println("Waiting for a client to connect...");
-                System.out.println("https://localhost:5000");
+                System.out.println("http://localhost:5000");
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("New client...");
 
                 // Create a new thread to handle the client request
-                Thread clientThread = new Thread(new ClientHandler(clientSocket));
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                Thread clientThread = new Thread(clientHandler);
                 clientThread.start();
             }
         }

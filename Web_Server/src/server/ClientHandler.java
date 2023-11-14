@@ -125,6 +125,7 @@ public class ClientHandler implements Runnable {
                     String key = URLDecoder.decode(parts[0], "UTF-8");
                     String val = URLDecoder.decode(parts[1], "UTF-8");
 
+
                     switch (key) {
                         case "account":
                             switch (val) {
@@ -161,9 +162,15 @@ public class ClientHandler implements Runnable {
                         case "value":
                             previousAccount1Val = account1.getBalance();
                             previousAccount2Val = account2.getBalance();
-                            account1.withdraw(Integer.parseInt(val));
-                            account2.deposit(Integer.parseInt(val));
-                            break;
+                            
+                            if(previousAccount1Val > Integer.parseInt(val)){
+                                account1.withdraw(Integer.parseInt(val));
+                                account2.deposit(Integer.parseInt(val));
+                                break;
+                            }
+                            else{
+                                System.out.println("Unable to make withdrawl, please choose a smaller amount");
+                            }
                     }
                 }
             }

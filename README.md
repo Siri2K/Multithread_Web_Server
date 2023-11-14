@@ -14,7 +14,7 @@
    > git clone https://github.com/Siri2K/Multithread_Web_Server.git
 2) Open Process Scheduler Project
 3) Open Terminal and enter 
-   > javac -sourcepath .\Web_Server\src\ -d .\out\ .\Web_Server\src\Main.java
+   > javac -sourcepath .\Web_Server\src\ -d Webserver\out\ .\Web_Server\src\WebServer.java
 4) Copy File.txt file using
    > cp .\Web_Server\resources\File.txt .\out\File.txt
 5) Go to out folder
